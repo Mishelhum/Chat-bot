@@ -1,0 +1,45 @@
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+import requests
+
+# Define your Telegram Bot token here
+TOKEN = 'your_telegram_bot_token'
+
+# Function to handle the /start command
+def start(update, context):
+    update.message.reply_text('Welcome to the NFT & Crypto Search Bot! Send me any message containing keywords like "NFT" or "crypto" to get related information.')
+
+# Function to handle text messages
+def search_keywords(update, context):
+    message_text = update.message.text.lower()
+    if 'nft' in message_text:
+        nft_info = search_nft()
+        if nft_info:
+            update.message.reply_text(nft_info)
+    if 'crypto' in message_text:
+        crypto_info = search_crypto()
+        if crypto_info:
+            update.message.reply_text(crypto_info)
+
+# Function to search for NFT information
+def search_nft():
+    # You can implement your NFT search logic here
+    return "Here's some information about NFTs: [Placeholder]"
+
+# Function to search for cryptocurrency information
+def search_crypto():
+    # You can implement your crypto search logic here
+    return "Here's some information about cryptocurrencies: [Placeholder]"
+
+# Create the Telegram bot and register handlers
+def main():
+    updater = Updater(TOKEN, use_context=True)
+    dp = updater.dispatcher
+
+    dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, search_keywords))
+
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == '__main__':
+    main()
